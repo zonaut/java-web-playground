@@ -1,4 +1,4 @@
-package com.zonaut.braindump.completables;
+package com.zonaut.braindump.completable_futures;
 
 import java.time.Duration;
 import java.time.Instant;
