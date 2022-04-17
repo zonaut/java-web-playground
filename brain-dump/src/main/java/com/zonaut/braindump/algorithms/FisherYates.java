@@ -1,4 +1,4 @@
-package com.zonaut.common.algorithms;
+package com.zonaut.braindump.algorithms;
 
 import java.util.Arrays;
 import java.util.Random;

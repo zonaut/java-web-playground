@@ -6,3 +6,5 @@ include 'application-ui'
 include 'application-sb-reactive'
 include 'application-sb-batch'
 include 'application-sb-quartz'
+
+include 'brain-dump'

@@ -1,0 +1,3 @@
+= Brain dump
+
+Module containing small examples about subjects I've come into contact with in everyday internet usage.
