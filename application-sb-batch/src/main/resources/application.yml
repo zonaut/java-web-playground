@@ -1,0 +1,17 @@
+server:
+  port: 8081
+  error:
+    whitelabel:
+      enabled: false
+
+spring:
+  application:
+    name: application-sb-batch
+
+logging:
+  level:
+    root: INFO
+    liquibase: INFO
+    org:
+      springframework:
+        web: INFO

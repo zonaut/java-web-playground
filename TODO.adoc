@@ -1,0 +1,27 @@
+= TODO
+
+== application-sb-reactive
+
+* proper controller errors on exceptions like unique constraint, bean validation, ...
+* add alarms on todos (expires or needs to be done on...)
+* update controller to also add description and alarm on creation
+* update controller to update title, description, alarm
+* take properties from a test config to configure the postgres test container and use dynamic ports
+
+== application-sb-batch
+
+* ...
+
+== application-sb-quartz
+
+* ...
+
+== application-ui
+
+* create entry dashboard page
+* create core and shared modules and clearly define contents
+* add bootstrap scss
+* create separate module and components for todo and add is as an option to the dashboard page
+* add routing for todo
+* add https://www.cypress.io/ to the application
+* write tests :)

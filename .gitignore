@@ -1,0 +1,17 @@
+### Gradle ###
+.gradle
+!gradle/wrapper/gradle-wrapper.jar
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### Build and dependency and other directories that need to be ignored ###
+target/
+build/
+out/
+node_modules/
+logs/
+dist/

@@ -1,0 +1,45 @@
+server:
+  port: 8080
+  error:
+    whitelabel:
+      enabled: false
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+
+spring:
+  application:
+    name: application-sb-reactive
+  liquibase:
+    enabled: true
+    drop-first: true
+    change-log: classpath:/db/changelog/changelog-master.xml
+    url: jdbc:postgresql://localhost:5434/sb-reactive
+    user: postgres
+    password: password
+    contexts: stubs
+  r2dbc:
+    url: r2dbc:postgresql://localhost:5434/sb-reactive
+    username: postgres
+    password: password
+
+# Todo check if we can't reuse existing properties
+postgres:
+  host: localhost
+  port: 5434
+  database: sb-reactive
+  username: postgres
+  password: password
+
+logging:
+  level:
+    root: INFO
+    liquibase: INFO
+    org:
+      springframework:
+        web: INFO
+        data:
+          r2dbc: DEBUG

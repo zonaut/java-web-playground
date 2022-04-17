@@ -1,0 +1,35 @@
+= Java Web playground
+
+This is a playground repo for java and web frameworks and utilities
+
+link:TODO.adoc[TODO]
+
+== Requirements
+
+- Java 17
+
+You can use https://sdkman.io/ to easily switch between versions
+
+== Run
+
+    docker-compose up
+
+Start application-sb-reactive and application-ui from the IDE or whatever method you prefer.
+
+Swagger is available on http://localhost:8080/webjars/swagger-ui/index.html
+
+== Build
+
+The tests are using testcontainers on a fixed port for now so make sure you run `docker-compose down` before building.
+
+Set includeUIinBackend to true in gradle.properties to include the UI in the backend jar if you want to run front and backend from a single jar.
+
+    ./gradlew clean build
+
+The jar will be available under application-sb-reactive/libs/application-sb-reactive-0.0.1.jar after building.
+
+Run the jar with
+
+    java -jar application-sb-reactive/build/libs/application-sb-reactive-0.0.1.jar
+
+The application is now available on http://localhost:8080/

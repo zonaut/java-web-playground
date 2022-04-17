@@ -1,0 +1,8 @@
+rootProject.name = 'java-web-playground'
+
+include 'application-common'
+
+include 'application-ui'
+include 'application-sb-reactive'
+include 'application-sb-batch'
+include 'application-sb-quartz'

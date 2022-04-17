@@ -1,0 +1,120 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+        classpath "com.adarshr:gradle-test-logger-plugin:${gradleTestLoggerPluginVersion}"
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+apply plugin: 'com.adarshr.test-logger'
+apply plugin: 'jacoco'
+
+group = "${group}"
+version = "${version}"
+
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    implementation project(':application-common')
+
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+    runtimeOnly 'org.springframework.boot:spring-boot-devtools'
+
+    // Database
+    implementation 'org.springframework.boot:spring-boot-starter-data-r2dbc'
+    implementation "io.r2dbc:r2dbc-postgresql:${r2dbcPostgresqlVersion}"
+    // Needed for Liquibase when using r2dbc
+    implementation "org.springframework.boot:spring-boot-starter-jdbc"
+    implementation "org.postgresql:postgresql:${postgresVersion}"
+    implementation "org.liquibase:liquibase-core"
+
+    // API doc
+    implementation "org.springdoc:springdoc-openapi-webflux-ui:${springOpenApiVersion}"
+
+    // Testing
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'io.projectreactor:reactor-test'
+    testImplementation "org.testcontainers:r2dbc:${testContainersR2dbc}"
+    testImplementation "org.testcontainers:postgresql:${testContainersPostgresqlVersion}"
+
+    // ! this needs to be the last line here
+    if (includeUIinBackend.toBoolean()) {
+        implementation project(':application-ui')
+    }
+}
+
+// https://docs.gradle.org/current/userguide/jacoco_plugin.html
+jacoco {
+    toolVersion = "${jacocoVersion}"
+}
+
+jacocoTestReport {
+    dependsOn test // tests are required to run before generating the report
+    reports {
+        xml.required = false
+        csv.required = false
+        html.outputLocation = layout.buildDirectory.dir('jacocoHtml')
+    }
+    doLast {
+        println("Tests report file://${project.buildDir}/reports/tests/test/index.html")
+        println("Jacoco report file://${project.buildDir}/jacocoHtml/index.html")
+    }
+    excludedClassFilesForReport(classDirectories)
+}
+
+jacocoTestCoverageVerification {
+    excludedClassFilesForReport(classDirectories)
+    violationRules {
+        rule {
+            limit {
+                minimum = 0.75 // from 0 to 1 where 1 is 100%
+            }
+        }
+        failOnViolation = true
+    }
+}
+
+test {
+    useJUnitPlatform()
+    finalizedBy jacocoTestReport // report is always generated after tests run
+}
+
+// https://github.com/radarsh/gradle-test-logger-plugin
+testlogger {
+    showFullStackTraces true
+    slowThreshold 0
+    showFailedStandardStreams true
+}
+
+private excludedClassFilesForReport(classDirectories) {
+    classDirectories.setFrom(files(classDirectories.files.collect {
+        fileTree(dir: it, exclude: [
+                '**/*SBReactive.class',
+                '**/TransferObjects**',
+                '**/domain**'
+        ])
+    }))
+}
+
+// to run code coverage verification during the build (and fail when appropriate)
+check.dependsOn jacocoTestCoverageVerification

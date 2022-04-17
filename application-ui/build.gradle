@@ -1,0 +1,20 @@
+plugins {
+  id 'java'
+  // <!-- https://mvnrepository.com/artifact/com.github.node-gradle.node/com.github.node-gradle.node.gradle.plugin -->
+  id "com.github.node-gradle.node" version "3.1.1"
+}
+
+group = "${group}"
+version = "${version}"
+
+node {
+  version = '14.15.4'
+  npmVersion = '7.14.0'
+  download = true
+}
+
+jar.dependsOn 'npm_run_build'
+
+jar {
+  from 'dist/application-ui' into 'static'
+}

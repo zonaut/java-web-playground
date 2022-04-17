@@ -1,0 +1,19 @@
+server:
+  port: 8082
+  error:
+    whitelabel:
+      enabled: false
+
+spring:
+  application:
+    name: application-sb-quartz
+  quartz:
+    job-store-type: memory
+
+logging:
+  level:
+    root: INFO
+    liquibase: INFO
+    org:
+      springframework:
+        web: INFO

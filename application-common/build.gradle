@@ -1,0 +1,48 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath "com.adarshr:gradle-test-logger-plugin:${gradleTestLoggerPluginVersion}"
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'com.adarshr.test-logger'
+
+group = "${group}"
+version = "${version}"
+
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation "org.apache.commons:commons-lang3:${apacheCommonsLang}"
+
+    implementation "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
+    implementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${jacksonVersion}"
+    // Spatial data types for Jackson
+    implementation "com.bedatadriven:jackson-datatype-jts:${jacksonJtsVersion}"
+    implementation "org.json:json:${jsonVersion}"
+
+    implementation "io.r2dbc:r2dbc-postgresql:${r2dbcPostgresqlVersion}"
+    implementation "org.postgresql:postgresql:${postgresVersion}"
+}
+
+test {
+    useJUnitPlatform()
+}
+
+// https://github.com/radarsh/gradle-test-logger-plugin
+testlogger {
+    showFullStackTraces true
+    slowThreshold 0
+    showFailedStandardStreams true
+}
